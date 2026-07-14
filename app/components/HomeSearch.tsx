@@ -88,8 +88,13 @@ export function HomeSearch() {
     const searchValue = selected ? `${selected[1]} ${selected[2]} ${selected[0]}` : location;
     const clean = searchValue.trim().replace(/[^a-zA-Z0-9\s,-]/g, "");
     if (!clean) return;
-    const slug = clean.replace(/\s+/g, "-").replace(/,/g, "_");
-    window.open(`https://www.realtor.com/realestateandhomes-search/${encodeURIComponent(slug)}`, "_blank", "noopener,noreferrer");
+    const form = new FormData(event.currentTarget);
+    const params = new URLSearchParams({ location: clean });
+    const propertyType = String(form.get("propertyType") || "any");
+    const price = String(form.get("price") || "any");
+    if (propertyType !== "any") params.set("type", propertyType);
+    if (price !== "any") params.set("price", price);
+    window.location.assign(`/homes?${params.toString()}`);
   }
 
   return (
@@ -135,13 +140,13 @@ export function HomeSearch() {
         </label>
         <label>
           <span>Property type</span>
-          <select aria-label="Property type" defaultValue="any"><option value="any">Any property</option><option>House</option><option>Condo</option><option>Land</option><option>Multi-family</option></select>
+          <select name="propertyType" aria-label="Property type" defaultValue="any"><option value="any">Any property</option><option>House</option><option>Condo</option><option>Land</option><option>Multi-family</option></select>
         </label>
         <label>
           <span>Price range</span>
-          <select aria-label="Price range" defaultValue="any"><option value="any">Any price</option><option>Under $350k</option><option>$350k–$600k</option><option>$600k–$1M</option><option>$1M+</option></select>
+          <select name="price" aria-label="Price range" defaultValue="any"><option value="any">Any price</option><option>Under $350k</option><option>$350k–$600k</option><option>$600k–$1M</option><option>$1M+</option></select>
         </label>
-        <button type="submit" aria-label="Search homes on Realtor.com"><span>Search homes</span> ↗</button>
+        <button type="submit" aria-label="Explore homes in this location"><span>Explore homes</span> →</button>
       </form>
       <p className="location-attribution">Nationwide city and postal location data by <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a> · Search coverage includes all 50 states, Washington, D.C., and U.S. territories.</p>
     </div>
