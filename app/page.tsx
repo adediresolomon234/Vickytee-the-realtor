@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactForm } from "./components/ContactForm";
 import { HomeSearch } from "./components/HomeSearch";
+import { SiteHeader } from "./components/SiteHeader";
+import { SiteFooter } from "./components/SiteFooter";
 import { getPublishedMedia, type MediaItem } from "../lib/storage";
 
 const collections = [
@@ -84,18 +86,7 @@ async function SocialMedia() {
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <Link className="brand" href="#top" aria-label="Vickytee the Realtor home">
-          <Image src="/logo-gold.svg" alt="Vickytee the Realtor" width={270} height={82} priority />
-        </Link>
-        <nav aria-label="Primary navigation">
-          <a href="#buy">Buy</a>
-          <a href="#sell">Sell</a>
-          <a href="#about">About</a>
-          <a href="#social">Social</a>
-        </nav>
-        <a className="header-cta" href="#contact">Let’s talk</a>
-      </header>
+      <SiteHeader overlay />
 
       <section className="hero" id="top">
         <div className="hero-image" role="img" aria-label="Modern luxury home at dusk" />
@@ -105,8 +96,8 @@ export default function Home() {
           <h1>Find the place<br />that feels like <em>yours.</em></h1>
           <p className="hero-intro">Confident guidance for buyers, sellers, and investors—delivered with care, clarity, and a sharp eye for opportunity.</p>
           <div className="hero-actions">
-            <a className="button button-gold" href="#buy">Explore homes</a>
-            <a className="button button-ghost" href="#sell">Sell with Victoria</a>
+            <Link className="button button-gold" href="/homes">Explore homes</Link>
+            <Link className="button button-ghost" href="/sell">Sell with Victoria</Link>
           </div>
         </div>
         <div className="hero-signature">
@@ -160,7 +151,7 @@ export default function Home() {
             <li><span>02</span><div><strong>Present</strong><p>Clear preparation, refined marketing, and a launch designed to make an impression.</p></div></li>
             <li><span>03</span><div><strong>Negotiate</strong><p>Calm, responsive representation from the first showing through the closing table.</p></div></li>
           </ol>
-          <a className="button button-dark" href="#contact">Request a home consultation</a>
+          <Link className="button button-dark" href="/sell">See the selling plan</Link>
         </div>
       </section>
 
@@ -197,25 +188,7 @@ export default function Home() {
         <ContactForm />
       </section>
 
-      <footer>
-        <div className="footer-main">
-          <Image src="/logo-gold.svg" alt="Vickytee the Realtor" width={260} height={78} />
-          <p>Victoria Olorede, REALTOR®<br />Brokered by eXp Realty</p>
-          <div className="footer-links">
-            <a href="#buy">Buy</a><a href="#sell">Sell</a><a href="#about">About</a><a href="#contact">Contact</a>
-          </div>
-          <div className="footer-social">
-            <a href="https://www.instagram.com/vickyteetherealtor" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
-            <a href="https://www.tiktok.com/@vickyteetherealtor" target="_blank" rel="noreferrer" aria-label="TikTok">TK</a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">FB</a>
-          </div>
-        </div>
-        <div className="footer-legal">
-          <p>© {new Date().getFullYear()} Vickytee the Realtor. All rights reserved.</p>
-          <p>REALTOR® is a registered trademark of the National Association of REALTORS®. Information is deemed reliable but not guaranteed. Equal Housing Opportunity.</p>
-          <Link href="/admin">Admin</Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

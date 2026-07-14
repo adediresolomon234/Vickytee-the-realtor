@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import { SiteHeader } from "../components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
+import { Gallery } from "./Gallery";
+
+export const metadata: Metadata = { title:"Home Gallery | Vickytee the Realtor", description:"Explore Texas home styles and property profiles with Victoria Olorede." };
+export default function HomesPage() { return <main><SiteHeader /><section className="interior-hero gallery-hero"><div><p className="eyebrow light">Home inspiration gallery</p><h1>See what feels<br /><em>like home.</em></h1><p>Explore property styles, compare how they live, and discover which direction fits your next chapter.</p></div></section><section className="gallery-page"><div className="gallery-intro"><p className="eyebrow">Curated for your search</p><h2>Homes are not one-size-fits-all.</h2><p>These profiles show the kinds of homes Victoria can help you find across Texas. They are inspiration—not active MLS listings—so your search starts with your real priorities.</p></div><Gallery /></section><section className="gallery-cta"><p className="eyebrow light">Ready for real options?</p><h2>Turn inspiration into a live home search.</h2><p>Victoria will translate what you like into current homes that match your timing, budget, and preferred area.</p><a className="button button-gold" href="/contact">Create my search</a></section><SiteFooter /></main>; }
