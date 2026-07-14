@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(origin),
     title: "Vickytee the Realtor | Victoria Olorede, REALTOR®",
-    description: "Thoughtful real estate guidance for Texas buyers, sellers, and investors with Victoria Olorede of eXp Realty.",
+    description: "Thoughtful real estate guidance for buyers, sellers, and investors across the United States with Victoria Olorede of eXp Realty.",
     icons: { icon: "/logo-gold.svg", shortcut: "/logo-gold.svg" },
     openGraph: { title: "Vickytee the Realtor", description: "Find the place that feels like yours.", type: "website", images: [{ url: `${origin}/og.png`, width: 1200, height: 630, alt: "Vickytee the Realtor" }] },
     twitter: { card: "summary_large_image", title: "Vickytee the Realtor", description: "Find the place that feels like yours.", images: [`${origin}/og.png`] },

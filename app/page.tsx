@@ -92,7 +92,7 @@ export default function Home() {
         <div className="hero-image" role="img" aria-label="Modern luxury home at dusk" />
         <div className="hero-shade" />
         <div className="hero-content">
-          <p className="eyebrow light">Texas real estate · Elevated service</p>
+          <p className="eyebrow light">U.S. real estate · Elevated service</p>
           <h1>Find the place<br />that feels like <em>yours.</em></h1>
           <p className="hero-intro">Confident guidance for buyers, sellers, and investors—delivered with care, clarity, and a sharp eye for opportunity.</p>
           <div className="hero-actions">
@@ -141,7 +141,7 @@ export default function Home() {
         <div className="gallery-preview-copy">
           <p className="eyebrow light">The home gallery</p>
           <h2 id="gallery-preview-title">Save what catches<br /><em>your eye.</em></h2>
-          <p>Browse a curated collection of Texas home styles, from city condos to acreage retreats. Save your favorites and use them to show Victoria how you want to live.</p>
+          <p>Browse a curated collection of home styles from across the United States, from city condos to acreage retreats. Save your favorites and use them to show Victoria how you want to live.</p>
           <div className="gallery-preview-actions">
             <Link className="button button-gold" href="/homes">Explore the gallery</Link>
             <span>12 curated home profiles</span>
@@ -156,9 +156,9 @@ export default function Home() {
             <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=85" alt="Contemporary city condo interior" loading="lazy" />
             <span>City condo <b>↗</b></span>
           </Link>
-          <Link href="/homes/texas-ranch" className="preview-tile">
-            <img src="https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=900&q=85" alt="Texas ranch on open acreage" loading="lazy" />
-            <span>Texas ranch <b>↗</b></span>
+          <Link href="/homes/country-ranch" className="preview-tile">
+            <img src="https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=900&q=85" alt="Country ranch on open acreage" loading="lazy" />
+            <span>Country ranch <b>↗</b></span>
           </Link>
         </div>
       </section>

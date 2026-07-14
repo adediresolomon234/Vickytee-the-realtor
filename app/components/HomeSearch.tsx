@@ -103,7 +103,7 @@ export function HomeSearch() {
             onKeyDown={handleLocationKeys}
             onFocus={() => { if (results.length) setIsOpen(true); }}
             onBlur={() => window.setTimeout(() => setIsOpen(false), 150)}
-            placeholder="Try Dallas, TX or 75001"
+            placeholder="Try Atlanta, GA or 30301"
             role="combobox"
             aria-autocomplete="list"
             aria-expanded={isOpen}
