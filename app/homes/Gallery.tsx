@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { homes, homeTypes } from "../../lib/homes";
+import { homes, homeTypes, type HomeProfile } from "../../lib/homes";
 
-export function Gallery() {
+export function Gallery({ uploadedHomes = [] }: { uploadedHomes?: HomeProfile[] }) {
   const [type, setType] = useState("All");
   const [query, setQuery] = useState("");
   const [saved, setSaved] = useState<string[]>([]);
@@ -42,17 +42,19 @@ export function Gallery() {
     });
   }
 
-  const visible = useMemo(() => homes.filter((home) => (type === "All" || home.type === type) && `${home.name} ${home.type} ${home.setting}`.toLowerCase().includes(query.toLowerCase())), [type, query]);
+  const allHomes = useMemo(() => [...uploadedHomes, ...homes], [uploadedHomes]);
+  const availableTypes = useMemo(() => ["All", ...Array.from(new Set(allHomes.map((home) => home.type)))], [allHomes]);
+  const visible = useMemo(() => allHomes.filter((home) => (type === "All" || home.type === type) && `${home.name} ${home.type} ${home.setting}`.toLowerCase().includes(query.toLowerCase())), [allHomes, type, query]);
   return <>
     {browseLocation && <div className="location-search-context"><div><span aria-hidden="true">⌖</span><p><small>Exploring near</small><strong>{browseLocation}</strong>{browsePrice && <em>{browsePrice}</em>}</p></div><p>Choose a home style below to view its photos, tagged spaces, and guided room tour. Victoria can then match your favorites with available properties in this area.</p><Link href="/homes">Clear location</Link></div>}
     <div className="gallery-explorer">
       <div className="gallery-toolbar">
         <label><span>Search the collection</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try modern, acreage, or urban…" /></label>
-        <p aria-live="polite">Showing <strong>{visible.length}</strong> of {homes.length} profiles</p>
+        <p aria-live="polite">Showing <strong>{visible.length}</strong> of {allHomes.length} profiles</p>
         <div className="saved-counter" aria-live="polite"><span aria-hidden="true">♥</span>{saved.length} saved</div>
       </div>
       <div className="gallery-filters" aria-label="Filter homes by type">
-        {homeTypes.map((item) => <button className={type === item ? "active" : ""} type="button" key={item} onClick={() => setType(item)} aria-pressed={type === item}>{item}</button>)}
+        {availableTypes.map((item) => <button className={type === item ? "active" : ""} type="button" key={item} onClick={() => setType(item)} aria-pressed={type === item}>{item}</button>)}
       </div>
     </div>
     <div className="homes-grid">

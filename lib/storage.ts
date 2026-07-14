@@ -1,7 +1,10 @@
 import { env } from "cloudflare:workers";
+import type { HomeProfile } from "./homes";
 
 export type MediaItem = { id: string; createdAt: string; kind: "instagram" | "upload"; title: string; caption: string | null; url: string; posterUrl: string | null; storageKey: string | null; published: number };
 export type Lead = { id: string; createdAt: string; firstName: string; lastName: string; email: string; phone: string | null; interest: string; message: string | null; status: string };
+export type PropertyMediaItem = { id: string; propertyId: string; createdAt: string; kind: "image" | "video"; url: string; storageKey: string; altText: string; roomTag: string | null; sortOrder: number };
+export type PropertyRecord = { id: string; createdAt: string; updatedAt: string; slug: string; title: string; address: string; city: string; state: string; zip: string; price: string; propertyType: string; beds: string; baths: string; sqft: string; description: string; features: string; published: number; media: PropertyMediaItem[] };
 
 let ready = false;
 
@@ -19,6 +22,10 @@ export async function ensureSchema() {
     database.prepare(`CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, created_at TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL, caption TEXT, url TEXT NOT NULL, poster_url TEXT, storage_key TEXT, published INTEGER NOT NULL DEFAULT 1)`),
     database.prepare(`CREATE INDEX IF NOT EXISTS leads_created_idx ON leads(created_at DESC)`),
     database.prepare(`CREATE INDEX IF NOT EXISTS media_published_idx ON media(published, created_at DESC)`),
+    database.prepare(`CREATE TABLE IF NOT EXISTS properties (id TEXT PRIMARY KEY, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, slug TEXT NOT NULL UNIQUE, title TEXT NOT NULL, address TEXT NOT NULL, city TEXT NOT NULL, state TEXT NOT NULL, zip TEXT NOT NULL, price TEXT NOT NULL, property_type TEXT NOT NULL, beds TEXT NOT NULL, baths TEXT NOT NULL, sqft TEXT NOT NULL, description TEXT NOT NULL, features TEXT NOT NULL DEFAULT '[]', published INTEGER NOT NULL DEFAULT 1)`),
+    database.prepare(`CREATE TABLE IF NOT EXISTS property_media (id TEXT PRIMARY KEY, property_id TEXT NOT NULL REFERENCES properties(id) ON DELETE CASCADE, created_at TEXT NOT NULL, kind TEXT NOT NULL, url TEXT NOT NULL, storage_key TEXT NOT NULL, alt_text TEXT NOT NULL, room_tag TEXT, sort_order INTEGER NOT NULL DEFAULT 0)`),
+    database.prepare(`CREATE INDEX IF NOT EXISTS properties_published_idx ON properties(published, created_at DESC)`),
+    database.prepare(`CREATE INDEX IF NOT EXISTS property_media_property_idx ON property_media(property_id, sort_order)`),
   ]);
   ready = true;
 }
@@ -33,6 +40,56 @@ export async function getLeads() {
   await ensureSchema();
   const result = await db().prepare("SELECT id, created_at as createdAt, first_name as firstName, last_name as lastName, email, phone, interest, message, status FROM leads ORDER BY created_at DESC LIMIT 100").all<Lead>();
   return result.results;
+}
+
+const propertySelect = "SELECT id, created_at as createdAt, updated_at as updatedAt, slug, title, address, city, state, zip, price, property_type as propertyType, beds, baths, sqft, description, features, published FROM properties";
+const mediaSelect = "SELECT id, property_id as propertyId, created_at as createdAt, kind, url, storage_key as storageKey, alt_text as altText, room_tag as roomTag, sort_order as sortOrder FROM property_media";
+
+async function attachPropertyMedia(records: Omit<PropertyRecord, "media">[]) {
+  if (!records.length) return [];
+  const result = await db().prepare(`${mediaSelect} WHERE property_id IN (${records.map(() => "?").join(",")}) ORDER BY sort_order, created_at`).bind(...records.map((item) => item.id)).all<PropertyMediaItem>();
+  return records.map((property) => ({ ...property, media: result.results.filter((item) => item.propertyId === property.id) }));
+}
+
+export async function getPublishedProperties() {
+  await ensureSchema();
+  const result = await db().prepare(`${propertySelect} WHERE published = 1 ORDER BY created_at DESC`).all<Omit<PropertyRecord, "media">>();
+  return attachPropertyMedia(result.results);
+}
+
+export async function getAdminProperties() {
+  await ensureSchema();
+  const result = await db().prepare(`${propertySelect} ORDER BY created_at DESC`).all<Omit<PropertyRecord, "media">>();
+  return attachPropertyMedia(result.results);
+}
+
+export async function getPublishedPropertyBySlug(slug: string) {
+  await ensureSchema();
+  const record = await db().prepare(`${propertySelect} WHERE slug = ? AND published = 1 LIMIT 1`).bind(slug).first<Omit<PropertyRecord, "media">>();
+  if (!record) return null;
+  return (await attachPropertyMedia([record]))[0] || null;
+}
+
+export function propertyToHomeProfile(property: PropertyRecord): HomeProfile {
+  const images = property.media.filter((item) => item.kind === "image").map((item) => item.url);
+  const videos = property.media.filter((item) => item.kind === "video").map((item) => item.url);
+  let features: string[] = [];
+  try { features = JSON.parse(property.features) as string[]; } catch { /* Keep malformed legacy feature data from breaking the listing. */ }
+  return {
+    slug: property.slug,
+    name: property.title,
+    type: property.propertyType,
+    setting: `${property.city}, ${property.state}`,
+    segment: property.price,
+    beds: property.beds,
+    baths: property.baths,
+    size: `${property.sqft} sq ft`,
+    image: images[0] || "/og.png",
+    gallery: images,
+    videoUrls: videos,
+    summary: property.description,
+    features: features.length ? features : [property.address, `${property.city}, ${property.state} ${property.zip}`, property.propertyType],
+  };
 }
 
 export function getDatabase() { return db(); }

@@ -11,7 +11,7 @@ const roomNotes = [
 ];
 const tagPositions = [["24%", "34%"], ["68%", "57%"], ["44%", "72%"]];
 
-export function GuidedTour({ name, images, features }: { name: string; images: string[]; features: string[] }) {
+export function GuidedTour({ name, images, features, videos = [] }: { name: string; images: string[]; features: string[]; videos?: string[] }) {
   const [active, setActive] = useState(0);
   const currentName = roomNames[active] || `Space ${active + 1}`;
   const previous = () => setActive((current) => (current - 1 + images.length) % images.length);
@@ -55,6 +55,7 @@ export function GuidedTour({ name, images, features }: { name: string; images: s
         <p>Request a personal video call from a property so you can ask questions and direct the walkthrough in real time.</p>
         <div><Link className="button button-gold" href={`/contact?interest=${encodeURIComponent(`Live video tour — ${name}`)}`}>Book a live tour</Link><Link className="tour-video-link" href="/#social">Watch property videos ↗</Link></div>
       </div>
+      {videos.length > 0 && <div className="property-video-gallery"><div><p className="eyebrow">Video tours</p><h3>Watch this property.</h3></div>{videos.map((video, index) => <video controls playsInline preload="metadata" key={video} aria-label={`${name} video tour ${index + 1}`}><source src={video} />Your browser does not support video playback.</video>)}</div>}
     </section>
   );
 }

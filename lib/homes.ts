@@ -11,6 +11,7 @@ export type HomeProfile = {
   gallery: string[];
   summary: string;
   features: string[];
+  videoUrls?: string[];
 };
 
 const images = {
