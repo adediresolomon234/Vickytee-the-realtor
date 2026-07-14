@@ -137,6 +137,32 @@ export default function Home() {
         <p className="collection-note">Lifestyle imagery shown for inspiration; not represented as active listings.</p>
       </section>
 
+      <section className="gallery-preview" aria-labelledby="gallery-preview-title">
+        <div className="gallery-preview-copy">
+          <p className="eyebrow light">The home gallery</p>
+          <h2 id="gallery-preview-title">Save what catches<br /><em>your eye.</em></h2>
+          <p>Browse a curated collection of Texas home styles, from city condos to acreage retreats. Save your favorites and use them to show Victoria how you want to live.</p>
+          <div className="gallery-preview-actions">
+            <Link className="button button-gold" href="/homes">Explore the gallery</Link>
+            <span>12 curated home profiles</span>
+          </div>
+        </div>
+        <div className="gallery-preview-mosaic">
+          <Link href="/homes/modern-new-build" className="preview-tile preview-tile-large">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" alt="Modern new build exterior" loading="lazy" />
+            <span>Modern new build <b>↗</b></span>
+          </Link>
+          <Link href="/homes/city-condo" className="preview-tile">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=85" alt="Contemporary city condo interior" loading="lazy" />
+            <span>City condo <b>↗</b></span>
+          </Link>
+          <Link href="/homes/texas-ranch" className="preview-tile">
+            <img src="https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=900&q=85" alt="Texas ranch on open acreage" loading="lazy" />
+            <span>Texas ranch <b>↗</b></span>
+          </Link>
+        </div>
+      </section>
+
       <section className="service-story" id="sell">
         <div className="service-image">
           <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85" alt="Refined modern living room" loading="lazy" />
