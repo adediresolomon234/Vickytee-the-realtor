@@ -195,7 +195,7 @@ export default function Home() {
         </div>
         <div className="about-visual">
           <Image src="/victoria-portrait.jpeg" alt="Victoria Olorede, REALTOR with eXp Realty" width={1600} height={2000} />
-          <div className="exp-badge"><strong>eXp</strong><span>REALTY</span></div>
+          <div className="exp-badge"><Image src="/equal-housing-white.png" alt="Equal Housing Opportunity" width={52} height={55} unoptimized /></div>
         </div>
       </section>
 

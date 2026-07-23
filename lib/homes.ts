@@ -29,6 +29,8 @@ const images = {
   land: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=88",
 };
 
+// Seed data for the initial curated home profiles, migrated into the database
+// (see lib/storage.ts's seedHomeProfiles) so they're manageable from the admin.
 export const homes: HomeProfile[] = [
   { slug:"modern-new-build", name:"The Modern New Build", type:"New Construction", setting:"Suburban", segment:"$700K+", beds:"3–5", baths:"3–5", size:"2,800+ sq ft", image:images.modern, gallery:[images.modern,images.interior,images.kitchen], summary:"For buyers who want clean architecture, efficient systems, and the ease of being the first to call a home their own.", features:["Builder and contract guidance","Energy-conscious systems","Contemporary open layouts","Warranty review"] },
   { slug:"executive-estate", name:"The Executive Estate", type:"Luxury", setting:"Private Community", segment:"$1M+", beds:"4–6", baths:"4–7", size:"4,500+ sq ft", image:images.estate, gallery:[images.estate,images.luxury,images.pool], summary:"A refined home profile centered on privacy, scale, entertaining, and enduring architectural presence.", features:["Gated-community options","Entertaining spaces","Premium finishes","Privacy-focused search"] },
@@ -43,5 +45,3 @@ export const homes: HomeProfile[] = [
   { slug:"country-cottage", name:"The Country Cottage", type:"Cottage", setting:"Small Town", segment:"$300K+", beds:"2–4", baths:"1–3", size:"1,400+ sq ft", image:images.land, gallery:[images.land,images.cottage,images.ranch], summary:"Character, calm, and a little distance from the rush—without losing sight of access, condition, and long-term fit.", features:["Character-home evaluation","Commute and access","Renovation potential","Lifestyle-first search"] },
   { slug:"move-up-home", name:"The Move-Up Home", type:"Single Family", setting:"Premier Suburb", segment:"$650K+", beds:"4–6", baths:"3–5", size:"3,000+ sq ft", image:images.interior, gallery:[images.interior,images.modern,images.kitchen], summary:"More room and more refinement for the next chapter, coordinated with the sale or retention of your current home.", features:["Buy-and-sell coordination","Space planning","Equity strategy","Offer timing"] },
 ];
-
-export const homeTypes = ["All", ...Array.from(new Set(homes.map((home) => home.type)))];

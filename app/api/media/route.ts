@@ -1,18 +1,9 @@
-import { env } from "cloudflare:workers";
 import { NextResponse } from "next/server";
-import { getChatGPTUser } from "../../chatgpt-auth";
 import { ensureSchema, getDatabase, getMediaBucket, getPublishedMedia } from "../../../lib/storage";
-
-async function authorized() {
-  const user = await getChatGPTUser();
-  const adminEmail = (env as unknown as { ADMIN_EMAIL?: string }).ADMIN_EMAIL?.toLowerCase();
-  return !!user && (!adminEmail || user.email.toLowerCase() === adminEmail);
-}
 
 export async function GET() { return NextResponse.json(await getPublishedMedia()); }
 
 export async function POST(request: Request) {
-  if (!(await authorized())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const form = await request.formData();
   const title = String(form.get("title") || "").trim().slice(0, 140);
   const caption = String(form.get("caption") || "").trim().slice(0, 1000);

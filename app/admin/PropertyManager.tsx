@@ -1,20 +1,37 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useRef, useState } from "react";
 import type { PropertyRecord } from "../../lib/storage";
+import { PropertiesIcon } from "./icons";
+import { MediaDropzone, type MediaDropzoneHandle } from "./MediaDropzone";
+import { SlideOver } from "./SlideOver";
 
 export function PropertyManager({ properties }: { properties: PropertyRecord[] }) {
   const [status, setStatus] = useState("");
   const [busyId, setBusyId] = useState("");
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const mediaDropzoneRef = useRef<MediaDropzoneHandle>(null);
+
+  const visible = useMemo(() => {
+    if (!query.trim()) return properties;
+    const q = query.toLowerCase();
+    return properties.filter((property) => `${property.title} ${property.city} ${property.state}`.toLowerCase().includes(q));
+  }, [properties, query]);
+
+  const total = properties.length;
+  const live = properties.filter((property) => property.published).length;
+  const hidden = total - live;
 
   async function createProperty(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("Uploading property and media…");
     const form = event.currentTarget;
     const response = await fetch("/api/properties", { method: "POST", body: new FormData(form) });
-    const data = await response.json() as { error?: string };
+    const data = (await response.json()) as { error?: string };
     if (!response.ok) return setStatus(data.error || "Could not save this property.");
     form.reset();
+    mediaDropzoneRef.current?.reset();
     setStatus("Published. The property is now in the public gallery.");
     window.setTimeout(() => window.location.reload(), 700);
   }
@@ -22,8 +39,10 @@ export function PropertyManager({ properties }: { properties: PropertyRecord[] }
   async function updateProperty(id: string, action: "toggle" | "delete", published: boolean) {
     if (action === "delete" && !window.confirm("Delete this property and all of its uploaded media? This cannot be undone.")) return;
     setBusyId(id);
-    const response = await fetch(`/api/properties/${id}`, action === "delete" ? { method: "DELETE" } : { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ published: !published }) });
-    const data = await response.json() as { error?: string };
+    const response = await fetch(`/api/properties/${id}`, action === "delete"
+      ? { method: "DELETE" }
+      : { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ published: !published }) });
+    const data = (await response.json()) as { error?: string };
     if (!response.ok) {
       setStatus(data.error || "Could not update this property.");
       return setBusyId("");
@@ -31,27 +50,81 @@ export function PropertyManager({ properties }: { properties: PropertyRecord[] }
     window.location.reload();
   }
 
-  return <div className="property-manager">
-    <form className="admin-form property-form" onSubmit={createProperty}>
-      <div className="admin-form-grid"><label>Property title<input name="title" required placeholder="Modern home in Atlanta" /></label><label>Property type<select name="propertyType" required defaultValue="Single Family"><option>Single Family</option><option>Condo</option><option>Townhome</option><option>Luxury</option><option>Ranch</option><option>Investment</option><option>Land</option></select></label></div>
-      <label>Street address<input name="address" required placeholder="123 Example Street" /></label>
-      <div className="admin-form-grid admin-form-grid-three"><label>City<input name="city" required /></label><label>State<input name="state" required maxLength={2} placeholder="GA" /></label><label>ZIP code<input name="zip" required inputMode="numeric" placeholder="30301" /></label></div>
-      <div className="admin-form-grid admin-form-grid-four"><label>Price<input name="price" required placeholder="$725,000" /></label><label>Beds<input name="beds" required inputMode="decimal" /></label><label>Baths<input name="baths" required inputMode="decimal" /></label><label>Square feet<input name="sqft" required inputMode="numeric" /></label></div>
-      <label>Description<textarea name="description" rows={5} required placeholder="Describe the home, its setting, and what makes it special." /></label>
-      <label>Feature tags <span className="field-help">one per line</span><textarea name="features" rows={4} placeholder={"Open-concept living\nRenovated kitchen\nPrivate backyard"} /></label>
-      <label>Room label for this upload<input name="roomTag" placeholder="Kitchen, primary suite, exterior…" /></label>
-      <label>Photos and videos <span className="field-help">up to 20 files</span><input name="media" type="file" accept="image/*,video/*" multiple required /></label>
-      <p className="upload-note">Include at least one photo. Photos may be up to 15 MB each; videos up to 100 MB each; 150 MB total per upload.</p>
-      <button className="button button-dark" type="submit">Publish property</button>
-      <p className="form-status" aria-live="polite">{status}</p>
-    </form>
+  return (
+    <div>
+      <div className="admin-page-actions">
+        <button type="button" className="button button-dark" onClick={() => setOpen(true)}>+ Add Property</button>
+      </div>
 
-    <div className="property-admin-list">
-      <div className="property-list-heading"><h3>Managed properties</h3><span>{properties.length} total</span></div>
-      {properties.length ? properties.map((property) => <article className="property-admin-card" key={property.id}>
-        <div className="property-admin-thumb">{property.media.find((item) => item.kind === "image") ? <img src={property.media.find((item) => item.kind === "image")!.url} alt="" /> : <span>No photo</span>}</div>
-        <div><span className={`publish-status ${property.published ? "live" : "draft"}`}>{property.published ? "Live" : "Hidden"}</span><h4>{property.title}</h4><p>{property.city}, {property.state} {property.zip} · {property.media.length} media files</p><div className="property-admin-actions"><a href={`/homes/${property.slug}`} target="_blank" rel="noreferrer">View ↗</a><button type="button" disabled={busyId === property.id} onClick={() => updateProperty(property.id, "toggle", !!property.published)}>{property.published ? "Unpublish" : "Publish"}</button><button className="delete" type="button" disabled={busyId === property.id} onClick={() => updateProperty(property.id, "delete", !!property.published)}>Delete</button></div></div>
-      </article>) : <p className="admin-empty">No properties uploaded yet. Use the form above to publish the first one.</p>}
+      <div className="admin-stat-grid">
+        <article className="admin-stat-card">
+          <div><span>TOTAL PROPERTIES</span><strong>{total}</strong></div>
+          <span className="admin-stat-icon"><PropertiesIcon /></span>
+        </article>
+        <article className="admin-stat-card">
+          <div><span>LIVE</span><strong>{live}</strong></div>
+          <span className="admin-stat-icon"><PropertiesIcon /></span>
+        </article>
+        <article className="admin-stat-card">
+          <div><span>HIDDEN</span><strong>{hidden}</strong></div>
+          <span className="admin-stat-icon"><PropertiesIcon /></span>
+        </article>
+      </div>
+
+      <section className="admin-table-panel">
+        <div className="admin-table-panel-heading"><h3>Properties</h3><span>{total} total</span></div>
+        <div className="admin-search-row">
+          <input placeholder="Search properties" value={query} onChange={(event) => setQuery(event.target.value)} />
+        </div>
+        <div className="admin-table-scroll">
+        <table className="admin-data-table">
+          <thead>
+            <tr><th>Photo</th><th>Title</th><th>Location</th><th>Price</th><th>Media</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            {visible.length ? visible.map((property) => {
+              const thumb = property.media.find((item) => item.kind === "image");
+              return (
+                <tr key={property.id}>
+                  <td><div className="admin-table-thumb">{thumb ? <img src={thumb.url} alt="" /> : <span>No photo</span>}</div></td>
+                  <td>{property.title}</td>
+                  <td>{property.city}, {property.state}</td>
+                  <td>{property.price}</td>
+                  <td>{property.media.length}</td>
+                  <td><span className={`status-pill ${property.published ? "status-live" : "status-draft"}`}>{property.published ? "LIVE" : "HIDDEN"}</span></td>
+                  <td>
+                    <div className="admin-row-actions">
+                      <a href={`/homes/${property.slug}`} target="_blank" rel="noreferrer">View ↗</a>
+                      <button type="button" disabled={busyId === property.id} onClick={() => updateProperty(property.id, "toggle", !!property.published)}>{property.published ? "Unpublish" : "Publish"}</button>
+                      <button className="delete" type="button" disabled={busyId === property.id} onClick={() => updateProperty(property.id, "delete", !!property.published)}>Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            }) : (
+              <tr><td colSpan={7} className="admin-table-empty">No properties uploaded yet. Use &quot;+ Add Property&quot; to publish the first one.</td></tr>
+            )}
+          </tbody>
+        </table>
+        </div>
+      </section>
+
+      <SlideOver open={open} title="Add a new house" onClose={() => setOpen(false)}>
+        <form className="admin-form" onSubmit={createProperty}>
+          <div className="admin-form-grid"><label>Property title<input name="title" required placeholder="Modern home in Atlanta" /></label><label>Property type<select name="propertyType" required defaultValue="Single Family"><option>Single Family</option><option>Condo</option><option>Townhome</option><option>Luxury</option><option>Ranch</option><option>Investment</option><option>Land</option></select></label></div>
+          <label>Street address<input name="address" required placeholder="123 Example Street" /></label>
+          <div className="admin-form-grid admin-form-grid-three"><label>City<input name="city" required /></label><label>State<input name="state" required maxLength={2} placeholder="GA" /></label><label>ZIP code<input name="zip" required inputMode="numeric" placeholder="30301" /></label></div>
+          <div className="admin-form-grid admin-form-grid-four"><label>Price<input name="price" required placeholder="$725,000" /></label><label>Beds<input name="beds" required inputMode="decimal" /></label><label>Baths<input name="baths" required inputMode="decimal" /></label><label>Square feet<input name="sqft" required inputMode="numeric" /></label></div>
+          <label>Description<textarea name="description" rows={5} required placeholder="Describe the home, its setting, and what makes it special." /></label>
+          <label>Feature tags <span className="field-help">one per line</span><textarea name="features" rows={4} placeholder={"Open-concept living\nRenovated kitchen\nPrivate backyard"} /></label>
+          <label>Room label for this upload<input name="roomTag" placeholder="Kitchen, primary suite, exterior…" /></label>
+          <label>Photos and videos <span className="field-help">up to 20 files</span></label>
+          <MediaDropzone ref={mediaDropzoneRef} name="media" accept="image/*,video/*" multiple required helpText="Photos up to 15 MB each, videos up to 100 MB each" />
+          <p className="upload-note">Include at least one photo. Photos may be up to 15 MB each; videos up to 100 MB each; 150 MB total per upload.</p>
+          <button className="button button-dark" type="submit">Publish property</button>
+          <p className="form-status" aria-live="polite">{status}</p>
+        </form>
+      </SlideOver>
     </div>
-  </div>;
+  );
 }

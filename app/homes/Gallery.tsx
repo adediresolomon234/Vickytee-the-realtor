@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { homes, homeTypes, type HomeProfile } from "../../lib/homes";
+import type { HomeProfile } from "../../lib/homes";
 
 export function Gallery({ uploadedHomes = [] }: { uploadedHomes?: HomeProfile[] }) {
   const [type, setType] = useState("All");
@@ -10,6 +10,8 @@ export function Gallery({ uploadedHomes = [] }: { uploadedHomes?: HomeProfile[] 
   const [saved, setSaved] = useState<string[]>([]);
   const [browseLocation, setBrowseLocation] = useState("");
   const [browsePrice, setBrowsePrice] = useState("");
+
+  const availableTypes = useMemo(() => ["All", ...Array.from(new Set(uploadedHomes.map((home) => home.type)))], [uploadedHomes]);
 
   useEffect(() => {
     const restoreSavedHomes = () => {
@@ -25,10 +27,10 @@ export function Gallery({ uploadedHomes = [] }: { uploadedHomes?: HomeProfile[] 
       setBrowseLocation(params.get("location") || "");
       setBrowsePrice(params.get("price") || "");
       const requestedType = params.get("type");
-      if (requestedType && homeTypes.includes(requestedType)) setType(requestedType);
+      if (requestedType && availableTypes.includes(requestedType)) setType(requestedType);
     });
     return () => window.cancelAnimationFrame(frame);
-  }, []);
+  }, [availableTypes]);
 
   function toggleSaved(slug: string) {
     setSaved((current) => {
@@ -42,15 +44,13 @@ export function Gallery({ uploadedHomes = [] }: { uploadedHomes?: HomeProfile[] 
     });
   }
 
-  const allHomes = useMemo(() => [...uploadedHomes, ...homes], [uploadedHomes]);
-  const availableTypes = useMemo(() => ["All", ...Array.from(new Set(allHomes.map((home) => home.type)))], [allHomes]);
-  const visible = useMemo(() => allHomes.filter((home) => (type === "All" || home.type === type) && `${home.name} ${home.type} ${home.setting}`.toLowerCase().includes(query.toLowerCase())), [allHomes, type, query]);
+  const visible = useMemo(() => uploadedHomes.filter((home) => (type === "All" || home.type === type) && `${home.name} ${home.type} ${home.setting}`.toLowerCase().includes(query.toLowerCase())), [uploadedHomes, type, query]);
   return <>
     {browseLocation && <div className="location-search-context"><div><span aria-hidden="true">⌖</span><p><small>Exploring near</small><strong>{browseLocation}</strong>{browsePrice && <em>{browsePrice}</em>}</p></div><p>Choose a home style below to view its photos, tagged spaces, and guided room tour. Victoria can then match your favorites with available properties in this area.</p><Link href="/homes">Clear location</Link></div>}
     <div className="gallery-explorer">
       <div className="gallery-toolbar">
         <label><span>Search the collection</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Try modern, acreage, or urban…" /></label>
-        <p aria-live="polite">Showing <strong>{visible.length}</strong> of {allHomes.length} profiles</p>
+        <p aria-live="polite">Showing <strong>{visible.length}</strong> of {uploadedHomes.length} profiles</p>
         <div className="saved-counter" aria-live="polite"><span aria-hidden="true">♥</span>{saved.length} saved</div>
       </div>
       <div className="gallery-filters" aria-label="Filter homes by type">
