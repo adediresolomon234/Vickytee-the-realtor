@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ContactForm } from "./components/ContactForm";
+import Script from "next/script";
 import { HomeSearch } from "./components/HomeSearch";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
@@ -211,7 +211,25 @@ export default function Home() {
             <a href="mailto:victoria.olorede@exprealty.com"><span>Email</span>victoria.olorede@exprealty.com</a>
           </div>
         </div>
-        <ContactForm />
+        <div className="contact-embed">
+          <iframe
+            src="https://api.leadconnectorhq.com/widget/form/SrnGQgAY9s3eZmG2vzYv"
+            id="inline-SrnGQgAY9s3eZmG2vzYv"
+            data-layout="{'id':'INLINE'}"
+            data-trigger-type="alwaysShow"
+            data-trigger-value=""
+            data-activation-type="alwaysActivated"
+            data-activation-value=""
+            data-deactivation-type="neverDeactivate"
+            data-deactivation-value=""
+            data-form-name="Client Intake Form"
+            data-height="1743"
+            data-layout-iframe-id="inline-SrnGQgAY9s3eZmG2vzYv"
+            data-form-id="SrnGQgAY9s3eZmG2vzYv"
+            title="Client Intake Form"
+          />
+          <Script src="https://link.msgsndr.com/js/form_embed.js" strategy="afterInteractive" />
+        </div>
       </section>
 
       <SiteFooter />
