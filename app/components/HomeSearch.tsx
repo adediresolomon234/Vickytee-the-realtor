@@ -24,7 +24,7 @@ function matchingLocations(locations: UsLocation[], query: string) {
     .slice(0, resultLimit);
 }
 
-export function HomeSearch() {
+export function HomeSearch({ targetPath = "/homes" }: { targetPath?: string }) {
   const locations = useRef<UsLocation[] | null>(null);
   const [location, setLocation] = useState("");
   const [selected, setSelected] = useState<UsLocation | null>(null);
@@ -94,7 +94,7 @@ export function HomeSearch() {
     const price = String(form.get("price") || "any");
     if (propertyType !== "any") params.set("type", propertyType);
     if (price !== "any") params.set("price", price);
-    window.location.assign(`/homes?${params.toString()}`);
+    window.location.assign(`${targetPath}?${params.toString()}`);
   }
 
   return (
