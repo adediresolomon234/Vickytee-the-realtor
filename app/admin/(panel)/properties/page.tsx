@@ -1,4 +1,4 @@
-import { getBackendAdminProperties, getBackendListingLabels, publicBackendUrl, type BackendListingLabel, type BackendProperty } from "../../../../lib/backend";
+import { getBackendAdminProperties, getBackendListingLabels, type BackendListingLabel, type BackendProperty } from "../../../../lib/backend";
 import { PropertyManager } from "../../PropertyManager";
 
 export default async function AdminPropertiesPage({ searchParams }: { searchParams: Promise<{ label?: string }> }) {
@@ -14,7 +14,7 @@ export default async function AdminPropertiesPage({ searchParams }: { searchPara
         <h2>Properties</h2>
         <p>Add new listings with photos and videos, and control what is live on the public gallery.</p>
       </div>
-      <PropertyManager properties={properties} apiBaseUrl={publicBackendUrl()} initialListingLabel={label} listingLabels={listingLabels} />
+      <PropertyManager properties={properties} initialListingLabel={label} listingLabels={listingLabels} />
     </div>
   );
 }

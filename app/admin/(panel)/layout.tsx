@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { getBackendAdminMe, getBackendListingLabels, publicBackendUrl } from "../../../lib/backend";
+import { getBackendAdminMe, getBackendListingLabels } from "../../../lib/backend";
 import { displayListingLabel } from "../../../lib/listing-label";
 import { AdminShell } from "../AdminShell";
 
@@ -24,5 +24,5 @@ export default async function AdminPanelLayout({ children }: { children: ReactNo
   } catch {
     // The sidebar can still render its fixed links while the backend starts locally.
   }
-  return <AdminShell listingLabels={listingLabels} apiBaseUrl={publicBackendUrl()}>{children}</AdminShell>;
+  return <AdminShell listingLabels={listingLabels}>{children}</AdminShell>;
 }

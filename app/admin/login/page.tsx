@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { publicBackendUrl } from "../../../lib/backend";
 import { LoginForm } from "./LoginForm";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +13,7 @@ export default function AdminLoginPage() {
           <h1>Sign in</h1>
           <p>Use your backend admin credentials to manage leads and properties.</p>
         </div>
-        <LoginForm apiBaseUrl={publicBackendUrl()} />
+        <LoginForm />
       </section>
     </main>
   );

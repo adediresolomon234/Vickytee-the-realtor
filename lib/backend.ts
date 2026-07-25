@@ -81,7 +81,7 @@ export function publicBackendUrl() {
   return process.env.NEXT_PUBLIC_BACKEND_API_URL || process.env.BACKEND_API_URL || "http://localhost:8080";
 }
 
-function serverBackendUrl() {
+export function serverBackendUrl() {
   return process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:8080";
 }
 

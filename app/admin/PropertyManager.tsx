@@ -7,7 +7,7 @@ import { PropertiesIcon } from "./icons";
 import { MediaDropzone, type MediaDropzoneHandle } from "./MediaDropzone";
 import { SlideOver } from "./SlideOver";
 
-export function PropertyManager({ properties, apiBaseUrl, initialListingLabel = "", listingLabels = [] }: { properties: BackendProperty[]; apiBaseUrl: string; initialListingLabel?: string; listingLabels?: BackendListingLabel[] }) {
+export function PropertyManager({ properties, initialListingLabel = "", listingLabels = [] }: { properties: BackendProperty[]; apiBaseUrl?: string; initialListingLabel?: string; listingLabels?: BackendListingLabel[] }) {
   const [status, setStatus] = useState("");
   const [busyId, setBusyId] = useState("");
   const [query, setQuery] = useState("");
@@ -30,7 +30,7 @@ export function PropertyManager({ properties, apiBaseUrl, initialListingLabel = 
     event.preventDefault();
     setStatus("Uploading property and media…");
     const form = event.currentTarget;
-    const response = await fetch(`${apiBaseUrl}/api/admin/properties`, { method: "POST", body: new FormData(form), credentials: "include" });
+    const response = await fetch("/api/admin/properties", { method: "POST", body: new FormData(form), credentials: "include" });
     const data = (await response.json()) as { error?: string };
     if (!response.ok) return setStatus(data.error || "Could not save this property.");
     form.reset();
@@ -42,7 +42,7 @@ export function PropertyManager({ properties, apiBaseUrl, initialListingLabel = 
   async function updateProperty(id: string, action: "toggle" | "delete", published: boolean) {
     if (action === "delete" && !window.confirm("Delete this property and all of its uploaded media? This cannot be undone.")) return;
     setBusyId(id);
-    const response = await fetch(`${apiBaseUrl}/api/admin/properties/${id}`, action === "delete"
+    const response = await fetch(`/api/admin/properties/${id}`, action === "delete"
       ? { method: "DELETE", credentials: "include" }
       : { method: "PATCH", credentials: "include", headers: { "content-type": "application/json" }, body: JSON.stringify({ published: !published }) });
     const data = (await response.json()) as { error?: string };

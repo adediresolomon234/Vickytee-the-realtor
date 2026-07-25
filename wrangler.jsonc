@@ -12,5 +12,9 @@
 	},
 	"observability": {
 		"enabled": true
+	},
+	"vars": {
+		"BACKEND_API_URL": "https://property.myco.com.ng",
+		"NEXT_PUBLIC_BACKEND_API_URL": "https://property.myco.com.ng"
 	}
 }

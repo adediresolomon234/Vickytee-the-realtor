@@ -27,7 +27,7 @@ function uniqueLabels(labels: string[]) {
   return Array.from(labelMap.values()).sort((a, b) => a.localeCompare(b));
 }
 
-export function AdminShell({ children, listingLabels = [], apiBaseUrl }: { children: ReactNode; listingLabels?: string[]; apiBaseUrl: string }) {
+export function AdminShell({ children, listingLabels = [] }: { children: ReactNode; listingLabels?: string[]; apiBaseUrl?: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -44,7 +44,7 @@ export function AdminShell({ children, listingLabels = [], apiBaseUrl }: { child
     const name = labelName.trim();
     if (!name) return;
     setLabelStatus("Adding...");
-    const response = await fetch(`${apiBaseUrl}/api/admin/listing-labels`, {
+    const response = await fetch("/api/admin/listing-labels", {
       method: "POST",
       credentials: "include",
       headers: { "content-type": "application/json" },
