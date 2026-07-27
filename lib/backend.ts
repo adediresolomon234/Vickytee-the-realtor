@@ -77,6 +77,25 @@ export type BackendPropertyPage = {
   hasMore: boolean;
 };
 
+function backendMediaUrl(media: BackendPropertyMedia) {
+  if (!media.storageKey) return media.url;
+  if (!media.url || media.url.startsWith("http://localhost:") || media.url.startsWith("https://localhost:")) {
+    return `${publicBackendUrl()}/api/media/${media.storageKey}`;
+  }
+  return media.url;
+}
+
+function normalizeBackendProperty(property: BackendProperty): BackendProperty {
+  return {
+    ...property,
+    media: property.media.map((item) => ({ ...item, url: backendMediaUrl(item) })),
+  };
+}
+
+function normalizeBackendPropertyPage(page: BackendPropertyPage): BackendPropertyPage {
+  return { ...page, properties: page.properties.map(normalizeBackendProperty) };
+}
+
 export function publicBackendUrl() {
   return process.env.NEXT_PUBLIC_BACKEND_API_URL || process.env.BACKEND_API_URL || "http://localhost:8080";
 }
@@ -102,7 +121,7 @@ export async function getBackendLeads() {
 
 export async function getBackendAdminProperties() {
   const data = await adminFetch<{ properties: BackendProperty[] }>("/api/admin/properties");
-  return data.properties;
+  return data.properties.map(normalizeBackendProperty);
 }
 
 export async function getBackendAdminStats(): Promise<BackendStats> {
@@ -130,7 +149,7 @@ export async function getBackendPublishedPropertyPage({ mode, search = "", page 
   if (search.trim()) params.set("q", search.trim());
   const response = await fetch(`${serverBackendUrl()}/api/properties?${params.toString()}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`Backend request failed: ${response.status}`);
-  return response.json() as Promise<BackendPropertyPage>;
+  return normalizeBackendPropertyPage((await response.json()) as BackendPropertyPage);
 }
 
 export async function getBackendPublishedProperties(mode?: "buy" | "sell") {
@@ -142,7 +161,7 @@ export async function getBackendPublishedPropertyBySlug(slug: string) {
   const response = await fetch(`${serverBackendUrl()}/api/properties/${encodeURIComponent(slug)}`, { cache: "no-store" });
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`Backend request failed: ${response.status}`);
-  return response.json() as Promise<BackendProperty>;
+  return normalizeBackendProperty((await response.json()) as BackendProperty);
 }
 
 export function backendPropertyToHomeProfile(property: BackendProperty): HomeProfile {
