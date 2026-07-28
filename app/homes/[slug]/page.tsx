@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
-import { backendPropertyToHomeProfile, getBackendPublishedPropertyBySlug } from "../../../lib/backend";
 import { getPublishedPropertyBySlug, propertyToHomeProfile } from "../../../lib/storage";
 import { homes } from "../../../lib/homes";
 import { GuidedTour } from "./GuidedTour";
@@ -12,12 +11,6 @@ export const dynamic = "force-dynamic";
 export default async function HomeProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   let home = homes.find((item) => item.slug === slug);
-  try {
-    const uploaded = await getBackendPublishedPropertyBySlug(slug);
-    if (uploaded) home = backendPropertyToHomeProfile(uploaded);
-  } catch {
-    // Fall through to legacy hosted storage or curated static profiles.
-  }
   try {
     const uploaded = await getPublishedPropertyBySlug(slug);
     if (uploaded) home = propertyToHomeProfile(uploaded);

@@ -21,6 +21,7 @@ export function AddMediaButton({ defaultSection = "gallery" }: { defaultSection?
 
   function switchMediaKind(kind: MediaKind) {
     setMediaKind(kind);
+    mediaDropzoneRef.current?.reset();
   }
 
   async function uploadMedia(event: FormEvent<HTMLFormElement>) {
