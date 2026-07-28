@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { HomeSearch } from "./components/HomeSearch";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
@@ -129,7 +128,7 @@ export default function Home() {
               <div className="collection-overlay">
                 <p>{item.note}</p>
                 <h3>{item.name}</h3>
-                <a href="#contact" aria-label={`Ask Victoria about ${item.name}`}>Discover your options <span>→</span></a>
+                <a href="/contact" aria-label={`Ask Victoria about ${item.name}`}>Discover your options <span>→</span></a>
               </div>
             </article>
           ))}
@@ -200,37 +199,6 @@ export default function Home() {
       </section>
 
       <SocialMedia />
-
-      <section className="contact-section" id="contact">
-        <div className="contact-copy">
-          <p className="eyebrow light">Your next move</p>
-          <h2>Let’s make it<br /><em>a smart one.</em></h2>
-          <p>Buying, selling, investing, or just exploring? Share what is on your mind and Victoria will follow up personally.</p>
-          <div className="contact-details">
-            <a href="tel:+19408829004"><span>Call</span>(940) 882-9004</a>
-            <a href="mailto:victoria.olorede@exprealty.com"><span>Email</span>victoria.olorede@exprealty.com</a>
-          </div>
-        </div>
-        <div className="contact-embed">
-          <iframe
-            src="https://api.leadconnectorhq.com/widget/form/SrnGQgAY9s3eZmG2vzYv"
-            id="inline-SrnGQgAY9s3eZmG2vzYv"
-            data-layout="{'id':'INLINE'}"
-            data-trigger-type="alwaysShow"
-            data-trigger-value=""
-            data-activation-type="alwaysActivated"
-            data-activation-value=""
-            data-deactivation-type="neverDeactivate"
-            data-deactivation-value=""
-            data-form-name="Client Intake Form"
-            data-height="1743"
-            data-layout-iframe-id="inline-SrnGQgAY9s3eZmG2vzYv"
-            data-form-id="SrnGQgAY9s3eZmG2vzYv"
-            title="Client Intake Form"
-          />
-          <Script src="https://link.msgsndr.com/js/form_embed.js" strategy="afterInteractive" />
-        </div>
-      </section>
 
       <SiteFooter />
     </main>
