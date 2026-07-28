@@ -1,9 +1,9 @@
-import { getLeads, type Lead } from "../../../../lib/storage";
+import { getBackendLeads, type BackendLead } from "../../../../lib/backend";
 import { LeadsTable } from "../../LeadsTable";
 
 export default async function AdminLeadsPage() {
-  let leads: Lead[] = [];
-  try { leads = await getLeads(); } catch { /* Storage may be initializing in a local preview. */ }
+  let leads: BackendLead[] = [];
+  try { leads = await getBackendLeads(); } catch { /* Backend may be unavailable in a local preview. */ }
 
   return (
     <div className="admin-page">

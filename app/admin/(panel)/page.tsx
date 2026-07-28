@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { getAdminStats, getLeads, type Lead } from "../../../lib/storage";
+import { getBackendAdminStats, getBackendLeads, type BackendLead } from "../../../lib/backend";
 import { GalleryIcon, LeadsIcon, PropertiesIcon } from "../icons";
 import { LeadsTable } from "../LeadsTable";
 
 export default async function AdminDashboardPage() {
   let stats = { leads: 0, properties: 0, publishedProperties: 0, sectionMedia: 0 };
-  let leads: Lead[] = [];
+  let leads: BackendLead[] = [];
   try {
-    [stats, leads] = await Promise.all([getAdminStats(), getLeads()]);
-  } catch { /* Storage may be initializing in a local preview. */ }
+    [stats, leads] = await Promise.all([getBackendAdminStats(), getBackendLeads()]);
+  } catch { /* Backend may be unavailable in a local preview. */ }
 
   return (
     <div className="admin-page">
