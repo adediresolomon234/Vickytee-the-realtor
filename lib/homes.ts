@@ -11,8 +11,6 @@ export type HomeProfile = {
   gallery: string[];
   summary: string;
   features: string[];
-  listingLabel?: string;
-  locationSearch?: string;
   videoUrls?: string[];
 };
 
