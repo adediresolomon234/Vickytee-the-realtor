@@ -1,24 +1,25 @@
 import { NextResponse } from "next/server";
-import { ensureSchema, getDatabase, getMediaBucket } from "../../../../lib/storage";
+import { backendBaseUrl } from "../../../../lib/backend";
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-  const body = await request.json() as { published?: boolean };
-  if (typeof body.published !== "boolean") return NextResponse.json({ error: "Invalid update." }, { status: 400 });
-  await ensureSchema();
-  await getDatabase().prepare("UPDATE properties SET published = ?, updated_at = ? WHERE id = ?").bind(body.published ? 1 : 0, new Date().toISOString(), id).run();
-  return NextResponse.json({ ok: true });
+  return proxy(request, id);
 }
 
-export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-  await ensureSchema();
-  const database = getDatabase();
-  const media = await database.prepare("SELECT storage_key as storageKey FROM property_media WHERE property_id = ?").bind(id).all<{ storageKey: string }>();
-  await Promise.all(media.results.map((item) => getMediaBucket().delete(item.storageKey)));
-  await database.batch([
-    database.prepare("DELETE FROM property_media WHERE property_id = ?").bind(id),
-    database.prepare("DELETE FROM properties WHERE id = ?").bind(id),
-  ]);
-  return NextResponse.json({ ok: true });
+  return proxy(request, id);
+}
+
+async function proxy(request: Request, id: string) {
+  const target = new URL(`/api/admin/properties/${encodeURIComponent(id)}`, backendBaseUrl());
+  const headers = new Headers(request.headers);
+  headers.delete("host");
+  const response = await fetch(target, {
+    method: request.method,
+    headers,
+    body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
+    redirect: "manual",
+  });
+  return new NextResponse(response.body, { status: response.status, statusText: response.statusText, headers: response.headers });
 }

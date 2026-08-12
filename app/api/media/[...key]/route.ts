@@ -1,12 +1,12 @@
-import { getMediaBucket } from "../../../../lib/storage";
+import { NextResponse } from "next/server";
+import { backendBaseUrl } from "../../../../lib/backend";
 
 export async function GET(_request: Request, context: { params: Promise<{ key: string[] }> }) {
   const { key } = await context.params;
-  const object = await getMediaBucket().get(key.join("/"));
-  if (!object) return new Response("Not found", { status: 404 });
-  const headers = new Headers();
-  object.writeHttpMetadata(headers);
-  headers.set("etag", object.httpEtag);
-  headers.set("cache-control", "public, max-age=31536000, immutable");
-  return new Response(object.body, { headers });
+  const response = await fetch(new URL(`/api/media/${key.map(encodeURIComponent).join("/")}`, backendBaseUrl()));
+  return new NextResponse(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers,
+  });
 }

@@ -1,14 +1,38 @@
 import { NextResponse } from "next/server";
-import { ensureSchema, getDatabase } from "../../../lib/storage";
+import { backendBaseUrl } from "../../../lib/backend";
+
+function clean(value: unknown, max: number) {
+  return String(value || "").trim().slice(0, max);
+}
 
 export async function POST(request: Request) {
   const data = await request.json() as Record<string, unknown>;
-  const firstName = String(data.firstName || "").trim().slice(0, 80);
-  const lastName = String(data.lastName || "").trim().slice(0, 80);
-  const email = String(data.email || "").trim().slice(0, 200);
-  if (!firstName || !lastName || !/^\S+@\S+\.\S+$/.test(email)) return NextResponse.json({ error: "Please provide a valid name and email." }, { status: 400 });
-  await ensureSchema();
-  await getDatabase().prepare("INSERT INTO leads (id, created_at, first_name, last_name, email, phone, interest, message, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'new')")
-    .bind(crypto.randomUUID(), new Date().toISOString(), firstName, lastName, email, String(data.phone || "").slice(0, 40), String(data.interest || "General question").slice(0, 80), String(data.message || "").slice(0, 3000)).run();
-  return NextResponse.json({ ok: true });
+  const firstName = clean(data.firstName, 80);
+  const lastName = clean(data.lastName, 80);
+  const email = clean(data.email, 200);
+  const phone = clean(data.phone, 40);
+  const interest = clean(data.lookingToDo || data.interest || "Not specified", 80);
+  if (!firstName || !lastName || !phone || !/^\S+@\S+\.\S+$/.test(email)) return NextResponse.json({ error: "Please provide a valid name, phone, and email." }, { status: 400 });
+
+  const response = await fetch(new URL("/api/leads", backendBaseUrl()), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", accept: "application/json" },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      email,
+      phone,
+      preferredContactDate: clean(data.preferredContactDate, 10),
+      bestTimeToContact: clean(data.bestTimeToContact, 40),
+      lookingToDo: interest,
+      idealTimeframe: clean(data.idealTimeframe || "Not specified", 40),
+      investmentType: clean(data.investmentType || "Not specified", 80),
+      nonMarketingSmsConsent: data.nonMarketingSmsConsent === true,
+      marketingSmsConsent: data.marketingSmsConsent === true,
+      source: "website",
+    }),
+  });
+
+  const body = await response.json().catch(() => ({}));
+  return NextResponse.json(body, { status: response.status });
 }

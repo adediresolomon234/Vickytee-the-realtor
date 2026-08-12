@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { Section, SectionMediaItem } from "../../lib/storage";
+
+export type Section = "gallery" | "buy" | "sell";
+export type SectionMediaItem = { id: string; section: Section; kind: "image" | "video"; title: string; caption: string | null; url: string; published: boolean | number };
 
 export const SECTION_LABELS: Record<Section, string> = {
   gallery: "General gallery",

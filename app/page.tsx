@@ -3,7 +3,7 @@ import Link from "next/link";
 import { HomeSearch } from "./components/HomeSearch";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
-import { getPublishedMedia, type MediaItem } from "../lib/storage";
+import { ContactForm } from "./components/ContactForm";
 
 const collections = [
   {
@@ -23,13 +23,10 @@ const collections = [
   },
 ];
 
+type SocialMediaItem = { id: string; kind: "instagram" | "upload"; title: string; caption: string | null; url: string; posterUrl: string | null };
+
 async function SocialMedia() {
-  let items: MediaItem[] = [];
-  try {
-    items = await getPublishedMedia();
-  } catch {
-    // The local preview can render before hosted storage is attached.
-  }
+  const items: SocialMediaItem[] = [];
 
   return (
     <section className="social-section" id="social">
@@ -199,6 +196,21 @@ export default function Home() {
       </section>
 
       <SocialMedia />
+
+      <section className="contact-section" id="contact">
+        <div className="contact-copy">
+          <p className="eyebrow light">Your next move</p>
+          <h2>Let’s make it<br /><em>a smart one.</em></h2>
+          <p>Buying, selling, investing, or just exploring? Share what is on your mind and Victoria will follow up personally.</p>
+          <div className="contact-details">
+            <a href="tel:+19408829004"><span>Call</span>(940) 882-9004</a>
+            <a href="mailto:victoria.olorede@exprealty.com"><span>Email</span>victoria.olorede@exprealty.com</a>
+          </div>
+        </div>
+        <div className="contact-card">
+          <ContactForm />
+        </div>
+      </section>
 
       <SiteFooter />
     </main>

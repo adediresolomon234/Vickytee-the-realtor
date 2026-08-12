@@ -16,7 +16,28 @@ npm run dev
 npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+## GoHighLevel Leads
+
+The custom contact form posts to `/api/leads`. The route stores the lead locally
+and, when configured, sends it to GoHighLevel using:
+
+```http
+POST https://services.leadconnectorhq.com/contacts/upsert
+Version: 2021-07-28
+```
+
+Set these Cloudflare environment values:
+
+- `GHL_API_TOKEN`: LeadConnector/GoHighLevel private integration or OAuth token.
+- `GHL_LOCATION_ID`: the target GHL location ID.
+- `GHL_INTEREST_FIELD_KEY`: optional GHL custom field key for the interest field.
+- `GHL_MESSAGE_FIELD_KEY`: optional GHL custom field key for the message field.
+
+Use Wrangler secrets for the token:
+
+```bash
+npx wrangler secret put GHL_API_TOKEN
+```
 
 ## Included Shape
 

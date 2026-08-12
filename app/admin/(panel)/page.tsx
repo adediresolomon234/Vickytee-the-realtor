@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { getAdminStats, getLeads, type Lead } from "../../../lib/storage";
-import { GalleryIcon, LeadsIcon, PropertiesIcon } from "../icons";
+import { getBackendAdminStats, getBackendLeads, type BackendLead } from "../../../lib/backend";
+import { LeadsIcon, PropertiesIcon } from "../icons";
 import { LeadsTable } from "../LeadsTable";
 
 export default async function AdminDashboardPage() {
-  let stats = { leads: 0, properties: 0, publishedProperties: 0, sectionMedia: 0 };
-  let leads: Lead[] = [];
+  let stats = { leads: 0, properties: 0, publishedProperties: 0 };
+  let leads: BackendLead[] = [];
   try {
-    [stats, leads] = await Promise.all([getAdminStats(), getLeads()]);
-  } catch { /* Storage may be initializing in a local preview. */ }
+    [stats, leads] = await Promise.all([getBackendAdminStats(), getBackendLeads()]);
+  } catch { /* Backend may be unavailable in a local preview. */ }
 
   return (
     <div className="admin-page">
@@ -29,10 +29,6 @@ export default async function AdminDashboardPage() {
         <article className="admin-stat-card">
           <div><span>LIVE PROPERTIES</span><strong>{stats.publishedProperties}</strong></div>
           <span className="admin-stat-icon"><PropertiesIcon /></span>
-        </article>
-        <article className="admin-stat-card">
-          <div><span>GALLERY MEDIA</span><strong>{stats.sectionMedia}</strong></div>
-          <span className="admin-stat-icon"><GalleryIcon /></span>
         </article>
       </div>
 

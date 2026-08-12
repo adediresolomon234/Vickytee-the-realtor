@@ -30,7 +30,7 @@ const images = {
 };
 
 // Seed data for the initial curated home profiles, migrated into the database
-// (see lib/storage.ts's seedHomeProfiles) so they're manageable from the admin.
+// Static curated profiles render alongside listings returned by the Go backend.
 export const homes: HomeProfile[] = [
   { slug:"modern-new-build", name:"The Modern New Build", type:"New Construction", setting:"Suburban", segment:"$700K+", beds:"3–5", baths:"3–5", size:"2,800+ sq ft", image:images.modern, gallery:[images.modern,images.interior,images.kitchen], summary:"For buyers who want clean architecture, efficient systems, and the ease of being the first to call a home their own.", features:["Builder and contract guidance","Energy-conscious systems","Contemporary open layouts","Warranty review"] },
   { slug:"executive-estate", name:"The Executive Estate", type:"Luxury", setting:"Private Community", segment:"$1M+", beds:"4–6", baths:"4–7", size:"4,500+ sq ft", image:images.estate, gallery:[images.estate,images.luxury,images.pool], summary:"A refined home profile centered on privacy, scale, entertaining, and enduring architectural presence.", features:["Gated-community options","Entertaining spaces","Premium finishes","Privacy-focused search"] },

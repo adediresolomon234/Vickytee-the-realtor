@@ -1,9 +1,9 @@
-import { getAdminProperties, type PropertyRecord } from "../../../../lib/storage";
+import { getBackendAdminProperties, type BackendProperty } from "../../../../lib/backend";
 import { PropertyManager } from "../../PropertyManager";
 
 export default async function AdminPropertiesPage() {
-  let properties: PropertyRecord[] = [];
-  try { properties = await getAdminProperties(); } catch { /* Storage may be initializing in a local preview. */ }
+  let properties: BackendProperty[] = [];
+  try { properties = await getBackendAdminProperties(); } catch { /* Backend may be unavailable in a local preview. */ }
 
   return (
     <div className="admin-page">

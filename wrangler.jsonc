@@ -10,16 +10,11 @@
 		"directory": "dist/client",
 		"binding": "ASSETS"
 	},
-	"services": [
-		{
-			"binding": "WORKER_SELF_REFERENCE",
-			"service": "vickytee-realtor"
-		}
-	],
-	"images": {
-		"binding": "IMAGES"
-	},
 	"observability": {
 		"enabled": true
+	},
+	"vars": {
+		"BACKEND_API_URL": "https://property.myco.com.ng",
+		"NEXT_PUBLIC_BACKEND_API_URL": "https://property.myco.com.ng"
 	}
 }
