@@ -185,7 +185,7 @@ export default function Home() {
           <p>Real estate is personal. Victoria keeps the process clear, protects the details, and stays close from the first conversation to the moment the keys change hands.</p>
           <blockquote>“It’s a deal with Vickytee the Realtor.”</blockquote>
           <div className="about-links">
-            <a href="tel:+19408829004">(940) 882-9004</a>
+            <a href="tel:+19452371832">+1 945-237-1832</a>
             <a href="mailto:victoria.olorede@exprealty.com">victoria.olorede@exprealty.com</a>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function Home() {
           <h2>Let’s make it<br /><em>a smart one.</em></h2>
           <p>Buying, selling, investing, or just exploring? Share what is on your mind and Victoria will follow up personally.</p>
           <div className="contact-details">
-            <a href="tel:+19408829004"><span>Call</span>(940) 882-9004</a>
+            <a href="tel:+19452371832"><span>Call</span>+1 945-237-1832</a>
             <a href="mailto:victoria.olorede@exprealty.com"><span>Email</span>victoria.olorede@exprealty.com</a>
           </div>
         </div>

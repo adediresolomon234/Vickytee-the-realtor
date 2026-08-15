@@ -18,7 +18,7 @@ export default function BrokerInformationPage() {
       </section>
 
       <section className="legal-content">
-        <h2>Information About Brokerage Services</h2>
+        <h2 id="information-about-brokerage-services">Information About Brokerage Services</h2>
 
         <h3>Types of real estate license holders</h3>
         <ul>
@@ -82,14 +82,14 @@ export default function BrokerInformationPage() {
             <span>Sales Agent / Associate</span>
             <strong>Victoria Olorede &mdash; License 853908-SA</strong>
             <a href="mailto:victoria.olorede@exprealty.com">victoria.olorede@exprealty.com</a>
-            <a href="tel:+19408829004">(940) 882-9004</a>
+            <a href="tel:+19452371832">+1 945-237-1832</a>
           </div>
         </div>
         <p>Regulated by the Texas Real Estate Commission. Information available at <a href="https://www.trec.texas.gov" target="_blank" rel="noreferrer">www.trec.texas.gov</a>. TXR 2501 &middot; IABS 1-2</p>
 
         <hr className="legal-divider" />
 
-        <h2>TREC Consumer Protection Notice</h2>
+        <h2 id="consumer-protection-notice">TREC Consumer Protection Notice</h2>
         <ul>
           <li>The Texas Real Estate Commission (TREC) regulates real estate brokers and sales agents, real estate inspectors, easement and right-of-way agents, and timeshare interest providers.</li>
           <li>You can find more information and check the status of a license holder at <a href="https://www.trec.texas.gov" target="_blank" rel="noreferrer">www.trec.texas.gov</a>.</li>

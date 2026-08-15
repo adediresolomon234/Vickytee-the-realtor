@@ -91,12 +91,13 @@ export function ContactForm() {
       <div className="consent-options">
         <label className="consent-control">
           <input type="checkbox" name="nonMarketingSmsConsent" />
-          <span>By checking this box, I consent to receive non-marketing text messages from <strong>VICTORIA OLEREDE, REALTOR&reg;</strong> about property updates and market insights. Message frequency varies, message &amp; data rates may apply. Text HELP for assistance, reply STOP to opt out.</span>
+          <span>By checking this box, I consent to receive educational, informational, and occasional marketing text messages from <strong>VICKYTEETHEREALTOR INC</strong> related to property updates and market insights. Messages may be sent using an automated system, CRM, or ATDS, and may include prerecorded or artificial voice messages, as well as text messages. Message frequency varies based on my interaction with the services. Message and data rates may apply. Consent is not a condition of purchase. I can opt out at any time by replying STOP, or get help by replying HELP to <a href="tel:+19452371832">+1 945-237-1832</a>.</span>
         </label>
         <label className="consent-control">
           <input type="checkbox" name="marketingSmsConsent" />
-          <span>By checking this box, I consent to receive marketing and promotional messages including special offers, discounts, new product updates among others, from <strong>VICTORIA OLEREDE, REALTOR&reg;</strong> at the phone number provided. Frequency may vary. Message &amp; data rates may apply. Text HELP for assistance, reply STOP to opt out.</span>
+          <span>By checking this box, I confirm that I am using my own mobile number and email address, that I am at least 18 years old, and that I may be required to confirm my opt-in via a follow-up message.</span>
         </label>
+        <p className="consent-links"><a href="/terms-and-conditions">Terms &amp; Conditions</a><span aria-hidden="true">|</span><a href="/privacy-policy">Privacy Policy</a></p>
       </div>
       <button className="button button-gold" type="submit" disabled={state === "sending"}>{state === "sending" ? "Sending..." : "Send my message"}</button>
       <p className={`form-status ${state}`} aria-live="polite">{state === "sent" ? "Thank you - your message is with Victoria." : state === "error" ? "Something went wrong. Please call or email Victoria directly." : ""}</p>

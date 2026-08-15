@@ -12,7 +12,7 @@ export default function ContactPage() {
           <h1>Your next move<br /><em>starts here.</em></h1>
           <p>Buying, selling, investing, or still figuring it out? Tell Victoria where you are in the process.</p>
           <div className="contact-details">
-            <a href="tel:+19408829004"><span>Call</span>(940) 882-9004</a>
+            <a href="tel:+19452371832"><span>Call</span>+1 945-237-1832</a>
             <a href="mailto:victoria.olorede@exprealty.com"><span>Email</span>victoria.olorede@exprealty.com</a>
             <a href="https://www.instagram.com/vickyteetherealtor"><span>Instagram</span>@vickyteetherealtor</a>
           </div>
