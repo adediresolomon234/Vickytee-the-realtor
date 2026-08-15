@@ -1,4 +1,4 @@
-import type { SectionMediaItem } from "../../lib/storage";
+type SectionMediaItem = { id: string; kind: "image" | "video"; title: string; caption: string | null; url: string };
 
 export function SectionGallery({ items }: { items: SectionMediaItem[] }) {
   if (!items.length) return null;

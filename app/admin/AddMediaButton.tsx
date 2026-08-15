@@ -1,9 +1,8 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import type { Section } from "../../lib/storage";
 import { MediaDropzone, type MediaDropzoneHandle } from "./MediaDropzone";
-import { SECTION_LABELS } from "./SectionMediaManager";
+import { SECTION_LABELS, type Section } from "./SectionMediaManager";
 import { SlideOver } from "./SlideOver";
 
 type Tab = "media" | "social";

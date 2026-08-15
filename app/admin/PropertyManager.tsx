@@ -1,12 +1,12 @@
 "use client";
 
 import { FormEvent, useMemo, useRef, useState } from "react";
-import type { PropertyRecord } from "../../lib/storage";
+import type { BackendProperty } from "../../lib/backend";
 import { PropertiesIcon } from "./icons";
 import { MediaDropzone, type MediaDropzoneHandle } from "./MediaDropzone";
 import { SlideOver } from "./SlideOver";
 
-export function PropertyManager({ properties }: { properties: PropertyRecord[] }) {
+export function PropertyManager({ properties }: { properties: BackendProperty[] }) {
   const [status, setStatus] = useState("");
   const [busyId, setBusyId] = useState("");
   const [query, setQuery] = useState("");
@@ -111,7 +111,8 @@ export function PropertyManager({ properties }: { properties: PropertyRecord[] }
 
       <SlideOver open={open} title="Add a new house" onClose={() => setOpen(false)}>
         <form className="admin-form" onSubmit={createProperty}>
-          <div className="admin-form-grid"><label>Property title<input name="title" required placeholder="Modern home in Atlanta" /></label><label>Property type<select name="propertyType" required defaultValue="Single Family"><option>Single Family</option><option>Condo</option><option>Townhome</option><option>Luxury</option><option>Ranch</option><option>Investment</option><option>Land</option></select></label></div>
+          <div className="admin-form-grid"><label>Property title<input name="title" required placeholder="Modern home in Atlanta" /></label><label>Listing label<input name="listingMode" required defaultValue="for sale" placeholder="for sale" /></label></div>
+          <label>Property type<select name="propertyType" required defaultValue="Single Family"><option>Single Family</option><option>Condo</option><option>Townhome</option><option>Luxury</option><option>Ranch</option><option>Investment</option><option>Land</option></select></label>
           <label>Street address<input name="address" required placeholder="123 Example Street" /></label>
           <div className="admin-form-grid admin-form-grid-three"><label>City<input name="city" required /></label><label>State<input name="state" required maxLength={2} placeholder="GA" /></label><label>ZIP code<input name="zip" required inputMode="numeric" placeholder="30301" /></label></div>
           <div className="admin-form-grid admin-form-grid-four"><label>Price<input name="price" required placeholder="$725,000" /></label><label>Beds<input name="beds" required inputMode="decimal" /></label><label>Baths<input name="baths" required inputMode="decimal" /></label><label>Square feet<input name="sqft" required inputMode="numeric" /></label></div>

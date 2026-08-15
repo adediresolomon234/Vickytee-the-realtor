@@ -1,24 +1,10 @@
-import { getAdminSectionMedia, type SectionMediaItem } from "../../../../lib/storage";
-import { AddMediaButton } from "../../AddMediaButton";
-import { SectionMediaManager } from "../../SectionMediaManager";
-
-export default async function AdminBuyPage() {
-  let media: SectionMediaItem[] = [];
-  try { media = await getAdminSectionMedia("buy"); } catch { /* Storage may be initializing in a local preview. */ }
-
+export default function AdminBuyMediaPage() {
   return (
     <div className="admin-page">
-      <div className="admin-page-actions">
-        <AddMediaButton defaultSection="buy" />
-      </div>
-
       <div className="admin-page-intro">
-        <h2>Buy</h2>
-        <p>Photos and videos shown on the Buy page.</p>
+        <h2>Buy Page Media</h2>
+        <p>This feature was previously backed by frontend D1/R2 storage. Add matching Go backend endpoints before enabling page media management here.</p>
       </div>
-      <section className="admin-table-panel">
-        <SectionMediaManager initialMedia={media} showSection={false} />
-      </section>
     </div>
   );
 }
