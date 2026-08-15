@@ -173,15 +173,15 @@ footer { background:#0d0d0c; color:white; padding:65px 5vw 25px; }
 .footer-main > p { color:#96918a; font-size:11px; line-height:1.7; }
 .footer-brokerage { display:flex; align-items:center; gap:16px; }
 .footer-brokerage p { color:#96918a; font-size:11px; line-height:1.7; }
-.footer-company { display:flex; flex-direction:column; gap:16px; }
-.footer-company address { color:#96918a; font-size:10px; font-style:normal; line-height:1.7; letter-spacing:.04em; }
-.footer-company address strong { color:#c3bdb4; font-weight:600; }
 .footer-equal-housing { width:38px; height:auto; flex-shrink:0; opacity:.85; }
 .footer-links { display:flex; flex-wrap:wrap; gap:14px 22px; text-transform:uppercase; letter-spacing:.13em; font-size:9px; }
 .footer-links a:hover { color:var(--gold-light); }
 .footer-social { display:flex; gap:8px; }
 .footer-social a { width:34px; height:34px; border:1px solid #444; display:grid; place-items:center; font-size:8px; }
-.footer-disclosures { border-top:1px solid #292927; padding:20px 0; display:flex; flex-wrap:wrap; gap:10px 28px; font-size:10px; line-height:1.6; color:#b3ada5; }
+.footer-compliance { border-top:1px solid #292927; padding:24px 0; display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; }
+.footer-compliance address { color:#96918a; font-size:10px; font-style:normal; line-height:1.7; letter-spacing:.04em; }
+.footer-compliance address strong { color:#c3bdb4; font-weight:600; }
+.footer-disclosures { display:flex; flex-direction:column; align-items:center; gap:8px; font-size:10px; line-height:1.6; color:#b3ada5; }
 .footer-disclosures a { text-decoration:underline; text-underline-offset:3px; }
 .footer-disclosures a:hover { color:var(--gold-light); }
 .footer-legal { border-top:1px solid #292927; padding-top:20px; display:grid; grid-template-columns:auto 1fr; gap:35px; color:#6f6c67; font-size:8px; line-height:1.7; }

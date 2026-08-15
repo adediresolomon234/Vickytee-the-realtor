@@ -5,6 +5,7 @@ export type BackendLead = {
   lastName: string;
   phone: string;
   email: string;
+  address: string;
   preferredContactDate?: string | null;
   bestTimeToContact: string;
   lookingToDo: string;

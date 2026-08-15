@@ -41,6 +41,7 @@ export function ContactForm() {
         <label>Phone<input type="tel" name="phone" autoComplete="tel" required /></label>
         <label>Email<input type="email" name="email" autoComplete="email" required /></label>
       </div>
+      <label>Property address<input name="address" autoComplete="street-address" placeholder="Search address" /></label>
       <div className="form-row">
         <label>Preferred date of contact<input type="date" name="preferredContactDate" /></label>
         <label>Best time to contact<input type="time" name="bestTimeToContact" /></label>
