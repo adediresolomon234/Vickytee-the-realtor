@@ -138,6 +138,8 @@ h1,h2,h3 { font-family:var(--font-display), Georgia, serif; font-weight:400; mar
 .social-empty h3 { font-size:40px; margin-bottom:18px; }
 .social-empty > div:last-child > p:not(.eyebrow) { color:#aaa59e; line-height:1.8; font-size:14px; max-width:550px; margin-bottom:25px; }
 .contact-section { background:#25231f; color:#fff; padding:105px 8vw; display:grid; grid-template-columns:.82fr 1.18fr; gap:7vw; align-items:start; }
+.contact-section-no-form { display:block; }
+.contact-section-no-form .contact-copy { max-width:620px; }
 .contact-copy { position:sticky; top:105px; }
 .contact-copy h2 { font-size:clamp(49px,5vw,76px); line-height:.97; letter-spacing:-.03em; }
 .contact-copy h2 em { color:var(--gold-light); font-weight:400; }
@@ -311,6 +313,7 @@ footer { background:#0d0d0c; color:white; padding:65px 5vw 25px; }
 .contact-page-copy { position:sticky; top:105px; padding-top:18px; }
 .contact-page-copy > p:not(.eyebrow) { color:#aaa59d; line-height:1.8; max-width:520px; }
 .contact-page-form { min-width:0; }
+.contact-page-no-form .contact-page-copy { max-width:620px; }
 .contact-page-form .contact-card { border-radius:10px; }
 
 .legal-page-header { background:var(--ink); color:#fff; padding:150px 8vw 70px; }.legal-page-header h1 { font-size:clamp(42px,4.6vw,62px); line-height:1.02; letter-spacing:-.02em; margin:14px 0 18px; }.legal-page-header p { max-width:640px; color:rgba(255,255,255,.78); font-size:14px; line-height:1.8; }

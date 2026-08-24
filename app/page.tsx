@@ -3,7 +3,6 @@ import Link from "next/link";
 import { HomeSearch } from "./components/HomeSearch";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
-import { ContactForm } from "./components/ContactForm";
 
 const collections = [
   {
@@ -197,7 +196,7 @@ export default function Home() {
 
       <SocialMedia />
 
-      <section className="contact-section" id="contact">
+      <section className="contact-section contact-section-no-form" id="contact">
         <div className="contact-copy">
           <p className="eyebrow light">Your next move</p>
           <h2>Let’s make it<br /><em>a smart one.</em></h2>
@@ -206,9 +205,6 @@ export default function Home() {
             <a href="tel:+19452371832"><span>Call</span>+1 945-237-1832</a>
             <a href="mailto:victoria.olorede@exprealty.com"><span>Email</span>victoria.olorede@exprealty.com</a>
           </div>
-        </div>
-        <div className="contact-card">
-          <ContactForm />
         </div>
       </section>
 
